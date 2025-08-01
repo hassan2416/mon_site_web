@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Chatbot</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #chatbox { width: 100%; height: 300px; border: 1px solid #ccc; padding: 10px; overflow-y: scroll; }
+    input, button { padding: 10px; margin-top: 10px; width: 100%; }
+    .user { color: blue; font-weight: bold; }
+    .bot { color: green; }
+  </style>
+</head>
+<body>
+
+<h2>Mini Chatbot</h2>
+
+<div id="chatbox"></div>
+
+<input type="text" id="userInput" placeholder="Écrivez un message...">
+<button onclick="sendMessage()">Envoyer</button>
+
+<script>
+  // Fonction pour afficher les messages dans la boîte de chat
+  function displayMessage(message, sender) {
+    const chatbox = document.getElementById("chatbox");
+    const msg = document.createElement("p");
+    msg.innerHTML = `<span class="${sender}">${sender === 'user' ? 'Vous' : 'Bot'} :</span> ${message}`;
+    chatbox.appendChild(msg);
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+
+  // Fonction principale pour traiter le message
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const message = input.value.trim();
+    if (message === "") return;
+
+    displayMessage(message, 'user');
+    input.value = "";
+
+    // Traitement des réponses du bot
+    let response = "";
+
+    // Convertir en minuscules pour comparaison simple
+    const msg = message.toLowerCase();
+
+    // Réponses du chatbot (5 questions + salutations)
+    if (msg.includes("bonjour") || msg.includes("salut")) {
+      response = "Bonjour ! Comment puis-je vous aider ?";
+    } else if (msg.includes("bonsoir")) {
+      response = "Bonsoir ! Que puis-je faire pour vous ?";
+    } else if (msg.includes("comment ça va")) {
+      response = "Je vais bien, merci ! Et vous ?";
+    } else if (msg.includes("quel jour sommes-nous")) {
+      const date = new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      response = `Nous sommes le ${date}.`;
+    } else if (msg.includes("quelle heure") || msg.includes("heure")) {
+      const heure = new Date().toLocaleTimeString('fr-FR');
+      response = `Il est actuellement ${heure}.`;
+    } else if (msg.includes("qui es-tu")) {
+      response = "Je suis un mini chatbot développé en JavaScript.";
+    } else if (msg.includes("merci")) {
+      response = "Avec plaisir 😊";
+    } else {
+      response = "Je ne comprends pas encore cette question.";
+    }
+
+    displayMessage(response, 'bot');
+  }
+</script>
+
+</body>
+</html>
